@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* shadcn CSS variables — used by button and other ui components */
+@layer base {
+  :root {
+    --background: 9 9 11;
+    --foreground: 250 250 250;
+    --primary: 250 250 250;
+    --primary-foreground: 9 9 11;
+    --secondary: 39 39 42;
+    --secondary-foreground: 250 250 250;
+    --accent: 39 39 42;
+    --accent-foreground: 250 250 250;
+    --destructive: 239 68 68;
+    --destructive-foreground: 250 250 250;
+    --ring: 161 161 170;
+    --radius: 0.5rem;
+    --input: 63 63 70;
+    --border: 39 39 42;
+  }
+}
+
+/* Masonry grid via CSS columns */
+.masonry-grid {
+  columns: 1;
+  column-gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .masonry-grid { columns: 2; }
+}
+
+@media (min-width: 1024px) {
+  .masonry-grid { columns: 3; }
+}
+
+@media (min-width: 1280px) {
+  .masonry-grid { columns: 4; }
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 0.5rem;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #18181b; }
+::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+/* Blog content */
+.blog-content h2 { font-size: 1.5rem; font-weight: 300; margin: 2rem 0 1rem; color: white; }
+.blog-content h3 { font-size: 1.25rem; font-weight: 300; margin: 1.5rem 0 0.75rem; color: #e4e4e7; }
+.blog-content p { margin-bottom: 1.25rem; line-height: 1.8; color: #a1a1aa; }
+.blog-content ul, .blog-content ol { margin: 1rem 0 1.25rem 1.5rem; color: #a1a1aa; }
+.blog-content li { margin-bottom: 0.5rem; line-height: 1.7; }
+.blog-content img { width: 100%; height: auto; margin: 2rem 0; }
+.blog-content blockquote { border-left: 2px solid #3f3f46; padding-left: 1.5rem; margin: 1.5rem 0; color: #71717a; font-style: italic; }
