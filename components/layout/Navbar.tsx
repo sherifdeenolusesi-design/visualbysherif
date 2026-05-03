@@ -19,7 +19,7 @@ const navLinks = [
 const exploreMenuItems = [
   { href: '/portfolio', label: 'Portfolio', desc: 'Browse my photography work' },
   { href: '/shop',      label: 'Shop',      desc: 'Prints & digital products' },
-  { href: '/blog',      label: 'Journal',   desc: 'Stories, tips & behind the scenes' },
+  { href: '/blog',      label: 'Blog',   desc: 'Stories, tips & behind the scenes' },
 ]
 
 const clientMenuItems = [

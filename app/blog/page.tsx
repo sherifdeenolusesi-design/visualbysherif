@@ -3,7 +3,7 @@ import BlogCard from '@/components/blog/BlogCard'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Journal',
+  title: 'Blog',
   description: 'Photography tips, behind the scenes, and stories from the field.',
 }
 
@@ -20,7 +20,7 @@ export default async function BlogPage() {
     <div className="min-h-screen pt-16">
       <div className="max-w-5xl mx-auto px-4 py-20">
         <p className="text-zinc-600 uppercase tracking-[0.4em] text-xs text-center mb-6">
-          Journal
+          Blog
         </p>
         <h1 className="text-4xl font-thin text-white text-center mb-4">
           Tips &amp; Behind the Scenes

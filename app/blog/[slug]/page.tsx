@@ -62,7 +62,7 @@ export default async function BlogPostPage({ params }: Props) {
           href="/blog"
           className="text-zinc-600 text-xs uppercase tracking-widest hover:text-white transition-colors mb-10 inline-block"
         >
-          ← Back to Journal
+          ← Back to Blog
         </Link>
 
         {post.tags && post.tags.length > 0 && (

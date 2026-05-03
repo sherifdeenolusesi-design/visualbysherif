@@ -3,7 +3,7 @@ import Link from 'next/link'
 const footerLinks = [
   ['Portfolio', '/portfolio'],
   ['Print Shop', '/shop'],
-  ['Journal', '/blog'],
+  ['Blog', '/blog'],
   ['Book a Session', '/booking'],
   ['About', '/about'],
   ['Contact', '/contact'],
