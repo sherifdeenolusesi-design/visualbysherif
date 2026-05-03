@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextResponse } from 'next/server'
 import Replicate from 'replicate'
 import { checkRateLimit, sanitizeString, SECURE_HEADERS } from '@/lib/security'
