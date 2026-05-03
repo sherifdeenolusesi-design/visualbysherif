@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server'
 import Replicate from 'replicate'
 import { checkRateLimit, sanitizeString, SECURE_HEADERS } from '@/lib/security'
 
-const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN! })
-
 export async function POST(request: Request) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown'
   const rl = checkRateLimit(`photo-editor:${ip}`, 20, 60 * 60 * 1000)
@@ -23,6 +21,8 @@ export async function POST(request: Request) {
   }
 
   try {
+    const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN! })
+
     // ── Remove Background ─────────────────────────────────────────────────
     if (operation === 'remove-bg') {
       const output = await replicate.run('851-labs/background-remover:a029dff38972b5fda4ec5d75d7d1cd25aeff621d122a4d3bca8c8a5c16b2d25d', {

@@ -3,9 +3,6 @@ import OpenAI from 'openai'
 import Replicate from 'replicate'
 import { checkRateLimit, sanitizeString, SECURE_HEADERS } from '@/lib/security'
 
-const openai    = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! })
-const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN! })
-
 export async function POST(request: Request) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown'
   const rl = checkRateLimit(`planner:${ip}`, 15, 60 * 60 * 1000)
@@ -27,6 +24,9 @@ export async function POST(request: Request) {
   }
 
   try {
+    const openai    = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! })
+    const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN! })
+
     // Generate strategy with GPT-4o
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o',
