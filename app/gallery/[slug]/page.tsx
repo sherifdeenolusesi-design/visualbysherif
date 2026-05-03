@@ -17,7 +17,7 @@ export default async function ClientGalleryPage({ params }: Props) {
 
   const { data: gallery } = await supabase
     .from('client_galleries')
-    .select('id, name, slug, description, cover_image, expires_at')
+    .select('id, name, slug, description, cover_image, expires_at, created_at')
     .eq('slug', params.slug)
     .single()
 
