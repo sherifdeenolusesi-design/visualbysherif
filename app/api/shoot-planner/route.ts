@@ -87,7 +87,7 @@ Return JSON with this exact structure:
 
     const [img1, img2] = await Promise.all([
       replicate.run('black-forest-labs/flux-1.1-pro', {
-        input: { prompt: imagePrompt, aspect_ratio: '2:3', output_format: 'webp', output_quality: 95, prompt_upsampling: true },
+        input: { prompt: imagePrompt, aspect_ratio: '2:3', output_format: 'webp', output_quality: 95 },
       }),
       replicate.run('black-forest-labs/flux-1.1-pro', {
         input: { prompt: imagePrompt + ' different angle, wider shot', aspect_ratio: '16:9', output_format: 'webp', output_quality: 95 },
@@ -99,10 +99,7 @@ Return JSON with this exact structure:
       inspirationImages: [String(img1), String(img2)],
     }, { headers: SECURE_HEADERS })
   } catch (err: any) {
-    console.error('[shoot-planner]', err?.message)
-    return NextResponse.json(
-      { error: process.env.NODE_ENV === 'development' ? err.message : 'Failed to generate strategy. Please try again.' },
-      { status: 500, headers: SECURE_HEADERS }
-    )
+    console.error('[shoot-planner]', err?.message, err?.response?.data)
+    return NextResponse.json({ error: err?.message ?? 'Failed to generate strategy.' }, { status: 500, headers: SECURE_HEADERS })
   }
 }

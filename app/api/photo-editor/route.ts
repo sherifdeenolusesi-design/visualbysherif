@@ -14,9 +14,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid request.' }, { status: 400, headers: SECURE_HEADERS })
   }
 
-  const operation  = sanitizeString(formData.get('operation') as string ?? '', 50)
-  const imageFile  = formData.get('image') as File | null
-  const prompt     = sanitizeString(formData.get('prompt') as string ?? '', 500)
+  const operation = sanitizeString(formData.get('operation') as string ?? '', 50)
+  const imageFile = formData.get('image') as File | null
+  const prompt    = sanitizeString(formData.get('prompt') as string ?? '', 500)
 
   if (!operation) {
     return NextResponse.json({ error: 'Operation is required.' }, { status: 400, headers: SECURE_HEADERS })
@@ -28,9 +28,13 @@ export async function POST(request: Request) {
     // ── Remove Background ─────────────────────────────────────────────────
     if (operation === 'remove-bg') {
       if (!imageFile) return NextResponse.json({ error: 'Image is required.' }, { status: 400, headers: SECURE_HEADERS })
-      const output = await replicate.run('851-labs/background-remover:a029dff38972b5fda4ec5d75d7d1cd25aeff621d122a4d3bca8c8a5c16b2d25d', {
-        input: { image: imageFile },
-      })
+      // Convert File to Blob with explicit type
+      const bytes = await imageFile.arrayBuffer()
+      const blob  = new Blob([bytes], { type: imageFile.type || 'image/jpeg' })
+      const output = await replicate.run(
+        'cjwbw/rembg:fb8af171cfa1616ddcf1242c093f9c46bcada5ad23d2c0a7e2c5a8f9c79d32',
+        { input: { image: blob } }
+      )
       return NextResponse.json({ url: String(Array.isArray(output) ? output[0] : output) }, { headers: SECURE_HEADERS })
     }
 
@@ -47,20 +51,16 @@ export async function POST(request: Request) {
     // ── Animate Photo (Image to Video) ────────────────────────────────────
     if (operation === 'animate') {
       if (!imageFile) return NextResponse.json({ error: 'Image is required.' }, { status: 400, headers: SECURE_HEADERS })
+      const bytes = await imageFile.arrayBuffer()
+      const blob  = new Blob([bytes], { type: imageFile.type || 'image/jpeg' })
       const motionPrompt = prompt || 'Gentle cinematic camera movement, smooth and professional, film quality'
       const output = await replicate.run('wan-ai/wan2.1-i2v-480p', {
-        input: {
-          image:        imageFile,
-          prompt:       motionPrompt,
-          max_area:     '480*832',
-          fast_mode:    true,
-          sample_steps: 20,
-        },
+        input: { image: blob, prompt: motionPrompt, max_area: '480*832', fast_mode: true, sample_steps: 20 },
       })
       return NextResponse.json({ url: String(Array.isArray(output) ? output[0] : output) }, { headers: SECURE_HEADERS })
     }
 
-    // ── Generate Inspiration Background (themed) ──────────────────────────
+    // ── Generate Inspiration Backgrounds (themed) ─────────────────────────
     if (operation === 'inspire-bg') {
       if (!prompt) return NextResponse.json({ error: 'Describe the theme or mood.' }, { status: 400, headers: SECURE_HEADERS })
       const inspirePrompt = `${prompt}, cinematic photography backdrop, dramatic lighting, professional, ultra detailed, 8K, no people`
@@ -79,10 +79,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ error: 'Unknown operation.' }, { status: 400, headers: SECURE_HEADERS })
   } catch (err: any) {
-    console.error('[photo-editor]', err?.message)
-    return NextResponse.json(
-      { error: process.env.NODE_ENV === 'development' ? err.message : 'Processing failed. Please try again.' },
-      { status: 500, headers: SECURE_HEADERS }
-    )
+    console.error('[photo-editor]', err?.message, err?.response?.data)
+    return NextResponse.json({ error: err?.message ?? 'Processing failed.' }, { status: 500, headers: SECURE_HEADERS })
   }
 }
