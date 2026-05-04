@@ -32,7 +32,7 @@ export async function POST(request: Request) {
       const bytes = await imageFile.arrayBuffer()
       const blob  = new Blob([bytes], { type: imageFile.type || 'image/jpeg' })
       const output = await replicate.run(
-        'cjwbw/rembg:fb8af171cfa1616ddcf1242c093f9c46bcada5ad23d2c0a7e2c5a8f9c79d32',
+        'cjwbw/rembg:fb8af171cfa1616ddcf1242c093f9c46bcada5ad4cf6f2fbe8b81b330ec5c003',
         { input: { image: blob } }
       )
       return NextResponse.json({ url: String(Array.isArray(output) ? output[0] : output) }, { headers: SECURE_HEADERS })
