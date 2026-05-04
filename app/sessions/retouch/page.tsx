@@ -249,8 +249,8 @@ export default function RetouchPage() {
 
         <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="hidden" />
 
-        {!hasImage ? (
-          /* ── Upload zone ── */
+        {/* Upload zone — visible until a photo is loaded */}
+        {!hasImage && (
           <div
             onClick={() => fileRef.current?.click()}
             className="border border-dashed border-zinc-700 p-24 text-center cursor-pointer hover:border-zinc-500 transition-colors"
@@ -259,9 +259,10 @@ export default function RetouchPage() {
             <p className="text-white text-sm mb-1">Click to upload a portrait photo</p>
             <p className="text-zinc-600 text-xs">JPG, PNG, WEBP supported</p>
           </div>
-        ) : (
-          /* ── Editor ── */
-          <div className="flex gap-4 items-start">
+        )}
+
+        {/* Editor — canvas is ALWAYS in DOM so canvasRef is never null */}
+        <div className={hasImage ? 'flex gap-4 items-start' : 'hidden'}>
 
             {/* ── Left Panel ── */}
             <div className="w-56 flex-shrink-0 space-y-3">
@@ -419,7 +420,7 @@ export default function RetouchPage() {
             </div>
 
           </div>
-        )}
+        </div>
       </div>
     </div>
   )
