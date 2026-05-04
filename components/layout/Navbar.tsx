@@ -35,7 +35,8 @@ const sessionsMenuItems = [
   { href: '/sessions/event-quote',  label: 'Event Quote',        desc: 'Big event pricing quote' },
   { href: '/sessions/qr-generator', label: 'QR Code Generator',  desc: 'Generate event gallery QR codes' },
   { href: '/sessions/art-generator', label: 'AI Art Studio',   desc: 'Generate fine art for the shop' },
-  { href: '/sessions/photo-studio',  label: 'AI Photo Studio', desc: 'Shoot planner + AI photo editing' },
+  { href: '/sessions/photo-studio',  label: 'AI Photo Studio',   desc: 'Shoot planner + AI photo editing' },
+  { href: '/sessions/retouch',       label: 'Retouch Studio',    desc: 'Healing brush · AI skin enhancement · Presets' },
 ]
 
 export default function Navbar() {
