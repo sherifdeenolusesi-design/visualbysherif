@@ -47,20 +47,71 @@ function getBlurredCanvas(src: HTMLCanvasElement, radius: number): HTMLCanvasEle
   return tmp
 }
 
-function applyFrequencySeparation(canvas: HTMLCanvasElement, smoothing: number, texture: number) {
+// Build a feathered subject mask using dual skin-tone detection (YCbCr + RGB)
+function buildSubjectMask(data: Uint8ClampedArray, w: number, h: number, feather: number): Float32Array {
+  // Step 1: raw skin detection per pixel
+  const raw = new Uint8ClampedArray(w * h)
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i], g = data[i+1], b = data[i+2]
+    // YCbCr skin range (handles diverse skin tones)
+    const Y  =  0.299*r + 0.587*g + 0.114*b
+    const Cb = -0.169*r - 0.331*g + 0.500*b + 128
+    const Cr =  0.500*r - 0.419*g - 0.081*b + 128
+    const ycbcr = Y > 60 && Cb >= 70 && Cb <= 135 && Cr >= 125 && Cr <= 180
+    // RGB heuristic
+    const mx = Math.max(r,g,b), mn = Math.min(r,g,b)
+    const rgb = r > 80 && g > 30 && b > 15 && mx - mn > 10 && r > b
+    raw[i/4] = (ycbcr || rgb) ? 255 : 0
+  }
+  // Step 2: feather mask by blurring it with CSS filter on a temp canvas
+  const tmp = document.createElement('canvas'); tmp.width = w; tmp.height = h
+  const tCtx = tmp.getContext('2d')!
+  const maskImg = tCtx.createImageData(w, h)
+  for (let i = 0; i < raw.length; i++) {
+    const j = i*4; maskImg.data[j]=maskImg.data[j+1]=maskImg.data[j+2]=raw[i]; maskImg.data[j+3]=255
+  }
+  tCtx.putImageData(maskImg, 0, 0)
+  const blurred = document.createElement('canvas'); blurred.width = w; blurred.height = h
+  const bCtx = blurred.getContext('2d')!
+  bCtx.filter = `blur(${feather}px)`
+  bCtx.drawImage(tmp, 0, 0)
+  const bd = bCtx.getImageData(0, 0, w, h).data
+  const mask = new Float32Array(w * h)
+  for (let i = 0; i < mask.length; i++) mask[i] = bd[i*4] / 255
+  return mask
+}
+
+// Frequency separation — subject-only with controllable intensity
+// smoothing: blur radius scale (0-100), texture: detail preservation (0-100),
+// intensity: how strongly the effect blends overall (0-100)
+function applyFrequencySeparation(canvas: HTMLCanvasElement, smoothing: number, texture: number, intensity: number) {
   const ctx = canvas.getContext('2d')!
   const w = canvas.width, h = canvas.height
-  const orig = ctx.getImageData(0, 0, w, h)
-  const blurred = getBlurredCanvas(canvas, smoothing * 0.15)
-  const blurCtx = blurred.getContext('2d')!
-  const blur = blurCtx.getImageData(0, 0, w, h)
-  const result = ctx.createImageData(w, h)
-  const t = texture / 100
-  for (let i = 0; i < orig.data.length; i += 4) {
+  const origData = ctx.getImageData(0, 0, w, h)
+
+  // Build feathered subject mask (skin/face detection)
+  const mask = buildSubjectMask(origData.data, w, h, Math.max(4, smoothing * 0.1))
+
+  // Low frequency layer
+  const blurRadius = Math.max(1, smoothing * 0.18)
+  const blurred    = getBlurredCanvas(canvas, blurRadius)
+  const blurData   = blurred.getContext('2d')!.getImageData(0, 0, w, h)
+
+  const t       = texture   / 100   // texture preservation (1 = full texture, 0 = fully smooth)
+  const intens  = intensity / 100   // overall blend strength
+  const result  = ctx.createImageData(w, h)
+
+  for (let i = 0; i < origData.data.length; i += 4) {
+    const skinW = mask[i/4]  // how much this pixel is part of the subject
+
     for (let c = 0; c < 3; c++) {
-      result.data[i+c] = Math.round(blur.data[i+c] + (orig.data[i+c] - blur.data[i+c]) * t)
+      const orig    = origData.data[i+c]
+      const low     = blurData.data[i+c]
+      const freqVal = low + (orig - low) * t      // freq sep result
+      const subjectBlend = orig * (1 - skinW) + freqVal * skinW  // subject-masked result
+      result.data[i+c] = Math.round(orig * (1 - intens) + subjectBlend * intens)  // intensity control
     }
-    result.data[i+3] = orig.data[i+3]
+    result.data[i+3] = origData.data[i+3]
   }
   ctx.putImageData(result, 0, 0)
 }
@@ -167,6 +218,7 @@ export default function RetouchPage() {
   const [brushSize,    setBrushSize]    = useState(20)
   const [freqSmooth,   setFreqSmooth]   = useState(50)
   const [freqTexture,  setFreqTexture]  = useState(70)
+  const [freqIntensity,setFreqIntensity]= useState(80)
   const [colorBal,     setColorBal]     = useState<ColorBal>(DEFAULT_BAL)
   const [undoStack,    setUndoStack]    = useState<ImageData[]>([])
   const [processing,   setProcessing]   = useState('')
@@ -228,11 +280,11 @@ export default function RetouchPage() {
   }
 
   function doFreqSep() {
-    applyOp(() => applyFrequencySeparation(canvasRef.current!, freqSmooth, freqTexture))
+    applyOp(() => applyFrequencySeparation(canvasRef.current!, freqSmooth, freqTexture, freqIntensity))
   }
 
   function doAutoBlemish() {
-    applyOp(() => applyFrequencySeparation(canvasRef.current!, 60, 65))
+    applyOp(() => applyFrequencySeparation(canvasRef.current!, 65, 60, 90))
   }
 
   function doAutoGrade() {
@@ -392,8 +444,10 @@ export default function RetouchPage() {
                 <div className="border border-zinc-800 p-3 space-y-3">
                   <p className="text-zinc-400 text-[10px] uppercase tracking-widest">Frequency Separation</p>
                   <p className="text-zinc-600 text-[10px] leading-relaxed">Smooths skin tone while preserving natural texture</p>
-                  <Slider label="Smoothing" value={freqSmooth} onChange={setFreqSmooth} min={0} max={100} />
-                  <Slider label="Texture"   value={freqTexture} onChange={setFreqTexture} min={0} max={100} />
+                  <Slider label="Smoothing"  value={freqSmooth}    onChange={setFreqSmooth}    min={0} max={100} />
+                  <Slider label="Texture"    value={freqTexture}   onChange={setFreqTexture}   min={0} max={100} />
+                  <Slider label="Intensity"  value={freqIntensity} onChange={setFreqIntensity} min={0} max={100} />
+                  <p className="text-zinc-700 text-[10px] leading-relaxed">Applied only to detected skin/face. Background stays unchanged.</p>
                   <button onClick={doFreqSep}
                     className="w-full border border-zinc-700 text-zinc-300 py-2 text-[10px] uppercase tracking-widest hover:border-white hover:text-white transition-colors">
                     ✦ Apply Freq Separation
