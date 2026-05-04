@@ -247,18 +247,26 @@ export default function RetouchPage() {
           <p className="text-zinc-500 text-sm">Professional portrait retouching · AI skin enhancement · Healing brush · Presets</p>
         </div>
 
-        <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="hidden" />
+        {/* File input — always in DOM, triggered via label */}
+        <input
+          ref={fileRef}
+          id="retouch-file-input"
+          type="file"
+          accept="image/*"
+          onChange={handleFile}
+          style={{ position: 'absolute', opacity: 0, width: 0, height: 0, overflow: 'hidden' }}
+        />
 
-        {/* Upload zone — visible until a photo is loaded */}
+        {/* Upload zone — label triggers file picker natively (works in all browsers) */}
         {!hasImage && (
-          <div
-            onClick={() => fileRef.current?.click()}
-            className="border border-dashed border-zinc-700 p-24 text-center cursor-pointer hover:border-zinc-500 transition-colors"
+          <label
+            htmlFor="retouch-file-input"
+            className="border border-dashed border-zinc-700 p-24 text-center cursor-pointer hover:border-zinc-500 transition-colors block"
           >
             <p className="text-zinc-400 text-4xl mb-4">✦</p>
             <p className="text-white text-sm mb-1">Click to upload a portrait photo</p>
-            <p className="text-zinc-600 text-xs">JPG, PNG, WEBP supported</p>
-          </div>
+            <p className="text-zinc-600 text-xs">JPG, PNG, WEBP · click anywhere here</p>
+          </label>
         )}
 
         {/* Editor — canvas is ALWAYS in DOM so canvasRef is never null */}
@@ -315,10 +323,10 @@ export default function RetouchPage() {
                   className="w-full border border-zinc-800 text-zinc-500 py-2 text-[10px] uppercase tracking-widest hover:border-zinc-600 hover:text-white transition-colors">
                   Reset All
                 </button>
-                <button onClick={() => fileRef.current?.click()}
-                  className="w-full border border-zinc-800 text-zinc-500 py-2 text-[10px] uppercase tracking-widest hover:border-zinc-600 hover:text-white transition-colors">
+                <label htmlFor="retouch-file-input"
+                  className="w-full border border-zinc-800 text-zinc-500 py-2 text-[10px] uppercase tracking-widest hover:border-zinc-600 hover:text-white transition-colors cursor-pointer block text-center">
                   Change Photo
-                </button>
+                </label>
               </div>
             </div>
 
@@ -344,10 +352,10 @@ export default function RetouchPage() {
               </div>
 
               {/* The canvas */}
-              <div className={`relative border border-zinc-800 bg-zinc-900 overflow-hidden ${healMode ? 'cursor-crosshair' : ''}`}>
+              <div className={`relative border border-zinc-800 bg-zinc-900 overflow-auto ${healMode ? 'cursor-crosshair' : ''}`} style={{ maxHeight: '72vh' }}>
                 <canvas
                   ref={canvasRef}
-                  style={{ filter, width: '100%', display: 'block', maxHeight: '72vh', objectFit: 'contain' }}
+                  style={{ filter, width: '100%', height: 'auto', display: 'block' }}
                   onMouseDown={handleCanvasPointer}
                   onMouseMove={handleCanvasPointer}
                 />
