@@ -80,18 +80,15 @@ export default function PhotoStudioPage() {
   }
 
   async function runOperation(op: string) {
-    if (!uploadedImg) { setEditError('Please upload a photo first.'); return }
+    if (!uploadedFile) { setEditError('Please upload a photo first.'); return }
     setEditError(''); setProcessing(op)
     try {
-      const res  = await fetch('/api/photo-editor', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          operation: op,
-          image_url: uploadedImg,
-          prompt: op === 'generate-bg' ? bgPrompt : op === 'animate' ? animPrompt : inspPrompt,
-        }),
-      })
+      const form = new FormData()
+      form.append('operation', op)
+      form.append('image', uploadedFile)
+      const prompt = op === 'generate-bg' ? bgPrompt : op === 'animate' ? animPrompt : inspPrompt
+      if (prompt) form.append('prompt', prompt)
+      const res  = await fetch('/api/photo-editor', { method: 'POST', body: form })
       const data = await res.json()
       if (!res.ok) { setEditError(data.error ?? 'Processing failed.'); return }
       if (op === 'remove-bg')    setRemovedBg(data.url)

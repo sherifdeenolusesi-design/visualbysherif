@@ -9,17 +9,17 @@ export async function POST(request: Request) {
   const rl = checkRateLimit(`photo-editor:${ip}`, 20, 60 * 60 * 1000)
   if (!rl.allowed) return NextResponse.json({ error: 'Rate limit reached.' }, { status: 429, headers: SECURE_HEADERS })
 
-  let raw: unknown
-  try { raw = await request.json() } catch {
+  let formData: FormData
+  try { formData = await request.formData() } catch {
     return NextResponse.json({ error: 'Invalid request.' }, { status: 400, headers: SECURE_HEADERS })
   }
 
-  const operation = sanitizeString((raw as any)?.operation, 50)
-  const imageUrl  = (raw as any)?.image_url as string
-  const prompt    = sanitizeString((raw as any)?.prompt, 500)
+  const operation  = sanitizeString(formData.get('operation') as string ?? '', 50)
+  const imageFile  = formData.get('image') as File | null
+  const prompt     = sanitizeString(formData.get('prompt') as string ?? '', 500)
 
-  if (!operation || !imageUrl) {
-    return NextResponse.json({ error: 'Operation and image are required.' }, { status: 400, headers: SECURE_HEADERS })
+  if (!operation) {
+    return NextResponse.json({ error: 'Operation is required.' }, { status: 400, headers: SECURE_HEADERS })
   }
 
   try {
@@ -27,8 +27,9 @@ export async function POST(request: Request) {
 
     // ── Remove Background ─────────────────────────────────────────────────
     if (operation === 'remove-bg') {
+      if (!imageFile) return NextResponse.json({ error: 'Image is required.' }, { status: 400, headers: SECURE_HEADERS })
       const output = await replicate.run('851-labs/background-remover:a029dff38972b5fda4ec5d75d7d1cd25aeff621d122a4d3bca8c8a5c16b2d25d', {
-        input: { image: imageUrl },
+        input: { image: imageFile },
       })
       return NextResponse.json({ url: String(Array.isArray(output) ? output[0] : output) }, { headers: SECURE_HEADERS })
     }
@@ -45,14 +46,15 @@ export async function POST(request: Request) {
 
     // ── Animate Photo (Image to Video) ────────────────────────────────────
     if (operation === 'animate') {
+      if (!imageFile) return NextResponse.json({ error: 'Image is required.' }, { status: 400, headers: SECURE_HEADERS })
       const motionPrompt = prompt || 'Gentle cinematic camera movement, smooth and professional, film quality'
       const output = await replicate.run('wan-ai/wan2.1-i2v-480p', {
         input: {
-          image:          imageUrl,
-          prompt:         motionPrompt,
-          max_area:       '480*832',
-          fast_mode:      true,
-          sample_steps:   20,
+          image:        imageFile,
+          prompt:       motionPrompt,
+          max_area:     '480*832',
+          fast_mode:    true,
+          sample_steps: 20,
         },
       })
       return NextResponse.json({ url: String(Array.isArray(output) ? output[0] : output) }, { headers: SECURE_HEADERS })
