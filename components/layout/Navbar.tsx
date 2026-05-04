@@ -37,6 +37,7 @@ const sessionsMenuItems = [
   { href: '/sessions/art-generator', label: 'AI Art Studio',   desc: 'Generate fine art for the shop' },
   { href: '/sessions/photo-studio',  label: 'AI Photo Studio',   desc: 'Shoot planner + AI photo editing' },
   { href: '/sessions/retouch',       label: 'Retouch Studio',    desc: 'Healing brush · AI skin enhancement · Presets' },
+  { href: '/sessions/blog',          label: 'Blog Manager',      desc: 'Create posts with AI-generated cover images' },
 ]
 
 export default function Navbar() {
