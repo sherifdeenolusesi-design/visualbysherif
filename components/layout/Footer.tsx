@@ -48,7 +48,7 @@ export default function Footer() {
                 hello@virtualbysherif.com
               </a>
               <a
-                href="https://instagram.com/virtualbysherif"
+                href="https://instagram.com/visualbysherif"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-white text-sm hover:text-zinc-300 transition-colors"
