@@ -125,7 +125,7 @@ export default function Sidebar({
         ))}
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className={`flex-1 min-h-0 ${tab === 'chat' ? 'flex flex-col overflow-hidden' : 'overflow-y-auto'}`}>
 
         {/* ── Selected tab ── */}
         {tab === 'selected' && (
@@ -238,12 +238,12 @@ export default function Sidebar({
 
         {/* ── Chat tab ── */}
         {tab === 'chat' && (
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col flex-1 min-h-0">
             <div className="flex-1 overflow-y-auto p-3 space-y-2 min-h-0">
               {messages.length === 0 ? (
                 <div className="text-center pt-8">
-                  <p className="text-zinc-700 text-xs">No messages yet.</p>
-                  <p className="text-zinc-800 text-xs mt-1">Start the conversation below.</p>
+                  <p className="text-zinc-400 text-sm">No messages yet.</p>
+                  <p className="text-zinc-500 text-sm mt-1">Start the conversation below.</p>
                 </div>
               ) : (
                 messages.map((msg) => {
@@ -277,7 +277,7 @@ export default function Sidebar({
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 placeholder="Message..."
-                className="flex-1 bg-zinc-900 border border-zinc-800 text-white px-3 py-2 text-xs focus:outline-none focus:border-zinc-600 transition-colors placeholder:text-zinc-700"
+                className="flex-1 bg-zinc-900 border border-zinc-700 text-white px-3 py-2 text-sm focus:outline-none focus:border-zinc-400 transition-colors placeholder:text-zinc-500"
               />
               <button
                 type="submit"
