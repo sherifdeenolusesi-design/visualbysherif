@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, mkdir } from 'fs/promises'
-import path from 'path'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@supabase/supabase-js'
+
+function adminClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData()
@@ -12,35 +17,46 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Missing session_id or files' }, { status: 400 })
   }
 
-  // Save to uploads/ at project root (not public/) — served via /api/conference/image
-  const uploadDir = path.join(process.cwd(), 'uploads', 'conference', sessionId)
-  await mkdir(uploadDir, { recursive: true })
+  const supabase = adminClient()
 
-  const supabase = createClient()
-  const inserted: object[] = []
+  // Ensure the bucket exists (no-op if already exists)
+  await supabase.storage.createBucket('conference-photos', { public: true }).catch(() => {})
 
   const { count } = await supabase
     .from('session_photos')
     .select('*', { count: 'exact', head: true })
     .eq('session_id', sessionId)
 
+  const inserted: object[] = []
+
   for (let i = 0; i < files.length; i++) {
     const file = files[i]
-    const ext = path.extname(file.name) || '.jpg'
-    const safeName = `${Date.now()}-${i}${ext}`
-    const filePath = path.join(uploadDir, safeName)
+    const ext = (file.name.split('.').pop() || 'jpg').toLowerCase()
+    const storagePath = `${sessionId}/${Date.now()}-${i}.${ext}`
     const buffer = Buffer.from(await file.arrayBuffer())
-    await writeFile(filePath, buffer)
 
-    // URL served via API route — works reliably in dev and prod
-    const photoUrl = `/api/conference/image?path=conference/${sessionId}/${safeName}`
+    const { error: uploadError } = await supabase.storage
+      .from('conference-photos')
+      .upload(storagePath, buffer, {
+        contentType: file.type || 'image/jpeg',
+        upsert: false,
+      })
+
+    if (uploadError) {
+      console.error('[conference/upload] storage error:', uploadError.message)
+      continue
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('conference-photos')
+      .getPublicUrl(storagePath)
 
     const { data, error } = await supabase
       .from('session_photos')
       .insert({
         session_id: sessionId,
-        photo_url: photoUrl,
-        storage_path: filePath,
+        photo_url: publicUrl,
+        storage_path: storagePath,
         filename: file.name,
         order_index: (count ?? 0) + i,
       })

@@ -187,7 +187,7 @@ export default function HomePage() {
       </section>
 
       {/* Real work preview */}
-      <section className="py-28 bg-white">
+      <section className="py-28 bg-zinc-100">
         <div className="max-w-7xl mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -247,7 +247,7 @@ export default function HomePage() {
       </section>
 
       {/* Services */}
-      <section className="py-28 px-4 bg-white">
+      <section className="py-28 px-4 bg-zinc-100">
         <div className="max-w-5xl mx-auto">
           <motion.p
             initial={{ opacity: 0 }}
@@ -277,7 +277,7 @@ export default function HomePage() {
       </section>
 
       {/* Client Gallery CTA */}
-      <section className="py-28 px-4 bg-white">
+      <section className="py-28 px-4 bg-zinc-100">
         <div className="max-w-xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
