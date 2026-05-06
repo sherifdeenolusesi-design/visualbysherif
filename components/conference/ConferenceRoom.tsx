@@ -185,21 +185,32 @@ export default function ConferenceRoom({
 
   const uploadPhotos = async (files: FileList) => {
     setUploading(true)
-    const formData = new FormData()
-    formData.append('session_id', session.id)
-    Array.from(files).forEach((f) => formData.append('files', f))
+    try {
+      // Upload in batches of 5 to avoid timeout
+      const allFiles = Array.from(files)
+      const batchSize = 5
+      for (let i = 0; i < allFiles.length; i += batchSize) {
+        const batch = allFiles.slice(i, i + batchSize)
+        const formData = new FormData()
+        formData.append('session_id', session.id)
+        batch.forEach((f) => formData.append('files', f))
 
-    const res = await fetch('/api/conference/upload', { method: 'POST', body: formData })
-    const data = await res.json()
-
-    if (res.ok && data.uploaded?.length) {
-      setPhotos((prev) => {
-        const ids = new Set(prev.map((p) => p.id))
-        const fresh = (data.uploaded as SessionPhoto[]).filter((p) => !ids.has(p.id))
-        return [...prev, ...fresh]
-      })
+        const res = await fetch('/api/conference/upload', { method: 'POST', body: formData })
+        if (!res.ok) continue
+        const data = await res.json()
+        if (data.uploaded?.length) {
+          setPhotos((prev) => {
+            const ids = new Set(prev.map((p) => p.id))
+            const fresh = (data.uploaded as SessionPhoto[]).filter((p) => !ids.has(p.id))
+            return [...prev, ...fresh]
+          })
+        }
+      }
+    } catch (err) {
+      console.error('[uploadPhotos] error:', err)
+    } finally {
+      setUploading(false)
     }
-    setUploading(false)
   }
 
   const sendMessage = async (text: string) => {
@@ -280,8 +291,8 @@ export default function ConferenceRoom({
               {role === 'photographer' ? (
                 <>
                   <div className="w-16 h-16 rounded-full border border-zinc-800 flex items-center justify-center mb-5 text-zinc-700 text-2xl">↑</div>
-                  <p className="text-zinc-400 text-sm mb-2">No photos yet</p>
-                  <p className="text-zinc-700 text-xs">Use the controls below to upload photos to this session.</p>
+                  <p className="text-white text-base mb-2">No photos yet</p>
+                  <p className="text-zinc-400 text-sm">Use the controls below to upload photos to this session.</p>
                 </>
               ) : (
                 <>
