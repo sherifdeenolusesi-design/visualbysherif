@@ -113,7 +113,7 @@ export default function ConferencePage() {
   }
 
   const inputClass =
-    'w-full bg-zinc-900 border border-zinc-800 text-white px-4 py-3.5 focus:outline-none focus:border-zinc-600 transition-colors placeholder:text-zinc-700 text-sm'
+    'w-full bg-zinc-900 border border-zinc-700 text-white px-4 py-3.5 focus:outline-none focus:border-zinc-400 transition-colors placeholder:text-zinc-500 text-base'
 
   return (
     <div className="min-h-screen pt-16 px-4 py-16">
@@ -122,7 +122,7 @@ export default function ConferencePage() {
         {/* ── Reconnect: Recent Sessions ── */}
         {recentSessions.length > 0 && (
           <div>
-            <p className="text-zinc-600 uppercase tracking-[0.4em] text-xs mb-4">
+            <p className="text-white uppercase tracking-[0.4em] text-sm mb-4">
               Recent Sessions
             </p>
             <div className="space-y-2">
@@ -133,7 +133,7 @@ export default function ConferencePage() {
                 >
                   <div className="min-w-0">
                     <p className="text-white text-sm font-light truncate">{s.name}</p>
-                    <p className="text-zinc-600 text-xs mt-0.5">
+                    <p className="text-zinc-300 text-sm mt-0.5">
                       {new Date(s.joinedAt).toLocaleDateString('en-GB', {
                         day: 'numeric', month: 'short', year: 'numeric',
                       })}
@@ -166,7 +166,7 @@ export default function ConferencePage() {
 
         {/* ── Reconnect: Paste a link ── */}
         <div>
-          <p className="text-zinc-600 uppercase tracking-[0.4em] text-xs mb-4">
+          <p className="text-white uppercase tracking-[0.4em] text-sm mb-4">
             Rejoin via Link or Session ID
           </p>
           <form onSubmit={handleRejoin} className="flex gap-2">
@@ -191,16 +191,16 @@ export default function ConferencePage() {
 
         {/* ── Create New Session ── */}
         <div>
-          <p className="text-zinc-600 uppercase tracking-[0.4em] text-xs mb-4">
+          <p className="text-white uppercase tracking-[0.4em] text-sm mb-4">
             New Selection Session
           </p>
-          <p className="text-zinc-500 text-sm mb-8 leading-relaxed">
+          <p className="text-white text-base mb-8 leading-relaxed">
             Create a room and share the link with your client for collaborative photo selection.
           </p>
 
           <form onSubmit={handleCreate} className="space-y-5">
             <div>
-              <label className="block text-zinc-600 text-xs uppercase tracking-widest mb-2">
+              <label className="block text-white text-sm uppercase tracking-widest mb-2">
                 Session Name *
               </label>
               <input
@@ -214,7 +214,7 @@ export default function ConferencePage() {
             </div>
 
             <div>
-              <label className="block text-zinc-600 text-xs uppercase tracking-widest mb-2">
+              <label className="block text-white text-sm uppercase tracking-widest mb-2">
                 Your Name
               </label>
               <input
@@ -228,7 +228,7 @@ export default function ConferencePage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-zinc-600 text-xs uppercase tracking-widest mb-2">
+                <label className="block text-white text-sm uppercase tracking-widest mb-2">
                   Client Name
                 </label>
                 <input
@@ -240,7 +240,7 @@ export default function ConferencePage() {
                 />
               </div>
               <div>
-                <label className="block text-zinc-600 text-xs uppercase tracking-widest mb-2">
+                <label className="block text-white text-sm uppercase tracking-widest mb-2">
                   Client Email
                 </label>
                 <input
@@ -258,7 +258,7 @@ export default function ConferencePage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-white text-zinc-950 py-4 text-xs uppercase tracking-[0.2em] hover:bg-zinc-100 transition-colors disabled:opacity-50"
+              className="w-full bg-white text-zinc-950 py-4 text-sm uppercase tracking-[0.2em] hover:bg-zinc-100 transition-colors disabled:opacity-50 font-light"
             >
               {loading ? 'Creating Room...' : 'Create Session →'}
             </button>
