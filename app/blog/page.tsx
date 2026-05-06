@@ -19,13 +19,13 @@ export default async function BlogPage() {
   return (
     <div className="min-h-screen pt-16">
       <div className="max-w-5xl mx-auto px-4 py-20">
-        <p className="text-zinc-600 uppercase tracking-[0.4em] text-xs text-center mb-6">
+        <p className="text-zinc-400 uppercase tracking-[0.4em] text-sm text-center mb-6">
           Blog
         </p>
         <h1 className="text-4xl font-thin text-white text-center mb-4">
           Tips &amp; Behind the Scenes
         </h1>
-        <p className="text-zinc-500 text-sm text-center mb-20">
+        <p className="text-white text-base text-center mb-20">
           Photography tips, stories, and a look behind the lens.
         </p>
 
@@ -36,7 +36,7 @@ export default async function BlogPage() {
             ))}
           </div>
         ) : (
-          <p className="text-center text-zinc-700 py-20 text-sm">
+          <p className="text-center text-zinc-400 py-20 text-base">
             No posts yet — check back soon.
           </p>
         )}

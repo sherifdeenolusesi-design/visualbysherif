@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 const inputClass =
-  'w-full bg-zinc-900 border border-zinc-800 text-white px-4 py-3.5 focus:outline-none focus:border-zinc-600 transition-colors placeholder:text-zinc-700 text-sm'
+  'w-full bg-zinc-900 border border-zinc-800 text-white px-4 py-3.5 focus:outline-none focus:border-zinc-600 transition-colors placeholder:text-zinc-600 text-base'
 
 export default function ContactForm() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
@@ -41,7 +41,7 @@ export default function ContactForm() {
           ✓
         </div>
         <h2 className="text-xl font-thin text-white mb-2">Message Sent</h2>
-        <p className="text-zinc-500 text-sm">I'll be in touch soon.</p>
+        <p className="text-white text-base">I'll be in touch soon.</p>
       </div>
     )
   }
@@ -49,7 +49,7 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label className="block text-zinc-600 text-xs uppercase tracking-widest mb-2">
+        <label className="block text-white text-sm uppercase tracking-widest mb-2">
           Name *
         </label>
         <input
@@ -63,7 +63,7 @@ export default function ContactForm() {
         />
       </div>
       <div>
-        <label className="block text-zinc-600 text-xs uppercase tracking-widest mb-2">
+        <label className="block text-white text-sm uppercase tracking-widest mb-2">
           Email *
         </label>
         <input
@@ -77,7 +77,7 @@ export default function ContactForm() {
         />
       </div>
       <div>
-        <label className="block text-zinc-600 text-xs uppercase tracking-widest mb-2">
+        <label className="block text-white text-sm uppercase tracking-widest mb-2">
           Message *
         </label>
         <textarea
@@ -96,7 +96,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="w-full bg-white text-zinc-950 py-4 text-xs uppercase tracking-[0.2em] hover:bg-zinc-100 transition-colors disabled:opacity-50"
+        className="w-full bg-white text-zinc-950 py-4 text-sm uppercase tracking-[0.2em] hover:bg-zinc-100 transition-colors disabled:opacity-50"
       >
         {status === 'loading' ? 'Sending...' : 'Send Message'}
       </button>

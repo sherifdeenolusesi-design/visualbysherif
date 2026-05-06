@@ -19,11 +19,11 @@ export default async function ShopPage() {
   return (
     <div className="min-h-screen pt-16">
       <div className="max-w-6xl mx-auto px-4 py-20">
-        <p className="text-zinc-600 uppercase tracking-[0.4em] text-xs text-center mb-6">
+        <p className="text-zinc-400 uppercase tracking-[0.4em] text-sm text-center mb-6">
           Fine Art
         </p>
         <h1 className="text-4xl font-thin text-white text-center mb-4">Print Shop</h1>
-        <p className="text-zinc-500 text-sm text-center mb-20">
+        <p className="text-white text-base text-center mb-20">
           Museum-quality prints on archival paper, professionally produced.
         </p>
 
@@ -34,7 +34,7 @@ export default async function ShopPage() {
             ))}
           </div>
         ) : (
-          <p className="text-center text-zinc-700 py-20 text-sm">
+          <p className="text-center text-zinc-400 py-20 text-base">
             New prints coming soon.
           </p>
         )}

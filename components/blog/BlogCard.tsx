@@ -17,7 +17,7 @@ export default function BlogCard({ post }: Props) {
 
   return (
     <Link href={`/blog/${post.slug}`} className="group block">
-      <div className="overflow-hidden bg-zinc-900 aspect-video mb-5">
+      <div className="overflow-hidden bg-zinc-100 aspect-video mb-5">
         {post.cover_image ? (
           <Image
             src={post.cover_image}
@@ -27,25 +27,25 @@ export default function BlogCard({ post }: Props) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-950" />
+          <div className="w-full h-full bg-gradient-to-br from-zinc-200 to-zinc-100" />
         )}
       </div>
 
       {post.tags && post.tags.length > 0 && (
         <div className="flex gap-3 mb-3">
           {post.tags.slice(0, 2).map((tag) => (
-            <span key={tag} className="text-zinc-600 text-xs uppercase tracking-widest">
+            <span key={tag} className="text-zinc-400 text-sm uppercase tracking-widest">
               {tag}
             </span>
           ))}
         </div>
       )}
 
-      <h2 className="text-white font-light text-base mb-2 group-hover:text-zinc-300 transition-colors leading-snug">
+      <h2 className="text-zinc-950 font-light text-base mb-2 group-hover:text-zinc-600 transition-colors leading-snug">
         {post.title}
       </h2>
-      <p className="text-zinc-600 text-xs line-clamp-2 mb-4 leading-relaxed">{post.excerpt}</p>
-      <p className="text-zinc-700 text-xs">{date}</p>
+      <p className="text-zinc-400 text-sm line-clamp-2 mb-4 leading-relaxed">{post.excerpt}</p>
+      <p className="text-zinc-400 text-sm">{date}</p>
     </Link>
   )
 }

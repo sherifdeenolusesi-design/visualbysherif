@@ -45,11 +45,11 @@ export default function GalleryUnlock({ gallery }: Props) {
   return (
     <div className="flex items-center justify-center min-h-[80vh] px-4">
       <div className="w-full max-w-sm">
-        <p className="text-zinc-600 uppercase tracking-[0.4em] text-xs text-center mb-6">
+        <p className="text-zinc-400 uppercase tracking-[0.4em] text-sm text-center mb-6">
           Private Gallery
         </p>
-        <h1 className="text-2xl font-thin text-white text-center mb-2">{gallery.name}</h1>
-        <p className="text-zinc-500 text-sm text-center mb-10">
+        <h1 className="text-2xl font-thin text-zinc-950 text-center mb-2">{gallery.name}</h1>
+        <p className="text-zinc-300 text-base text-center mb-10">
           {gallery.description || 'Enter the password to access your photos.'}
         </p>
 
@@ -59,7 +59,7 @@ export default function GalleryUnlock({ gallery }: Props) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Gallery password"
-            className="w-full bg-zinc-900 border border-zinc-800 text-white px-4 py-3.5 text-center focus:outline-none focus:border-zinc-600 transition-colors placeholder:text-zinc-700"
+            className="w-full bg-white border border-zinc-300 text-zinc-950 px-4 py-3.5 text-center focus:outline-none focus:border-zinc-500 transition-colors placeholder:text-zinc-400"
             required
             autoFocus
           />
@@ -67,15 +67,15 @@ export default function GalleryUnlock({ gallery }: Props) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-white text-zinc-950 py-3.5 text-xs uppercase tracking-[0.2em] hover:bg-zinc-100 transition-colors disabled:opacity-50"
+            className="w-full bg-zinc-950 text-white py-3.5 text-xs uppercase tracking-[0.2em] hover:bg-zinc-800 transition-colors disabled:opacity-50"
           >
             {loading ? 'Verifying...' : 'Access Gallery'}
           </button>
         </form>
 
-        <p className="text-zinc-700 text-xs text-center mt-8">
+        <p className="text-zinc-400 text-sm text-center mt-8">
           Don't have the password?{' '}
-          <a href="/contact" className="text-zinc-500 hover:text-white transition-colors">
+          <a href="/contact" className="text-zinc-600 hover:text-zinc-950 transition-colors">
             Contact the photographer
           </a>
         </p>

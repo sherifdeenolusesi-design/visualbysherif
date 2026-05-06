@@ -7,7 +7,7 @@ interface Props {
 }
 
 const inputClass =
-  'w-full bg-zinc-900 border border-zinc-800 text-white px-4 py-3.5 focus:outline-none focus:border-zinc-600 transition-colors placeholder:text-zinc-700 text-sm'
+  'w-full bg-zinc-900 border border-zinc-800 text-white px-4 py-3.5 focus:outline-none focus:border-zinc-600 transition-colors placeholder:text-zinc-600 text-base'
 
 export default function BookingForm({ sessionTypes }: Props) {
   const [form, setForm] = useState({
@@ -52,7 +52,7 @@ export default function BookingForm({ sessionTypes }: Props) {
           ✓
         </div>
         <h2 className="text-2xl font-thin text-white mb-3">Request Received!</h2>
-        <p className="text-zinc-500 text-sm leading-relaxed">
+        <p className="text-white text-base leading-relaxed">
           Thank you for reaching out. I'll be in touch within 24 hours to confirm your session.
         </p>
       </div>
@@ -65,7 +65,7 @@ export default function BookingForm({ sessionTypes }: Props) {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-zinc-600 text-xs uppercase tracking-widest mb-2">
+          <label className="block text-white text-sm uppercase tracking-widest mb-2">
             Full Name *
           </label>
           <input
@@ -79,7 +79,7 @@ export default function BookingForm({ sessionTypes }: Props) {
           />
         </div>
         <div>
-          <label className="block text-zinc-600 text-xs uppercase tracking-widest mb-2">
+          <label className="block text-white text-sm uppercase tracking-widest mb-2">
             Email *
           </label>
           <input
@@ -96,7 +96,7 @@ export default function BookingForm({ sessionTypes }: Props) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-zinc-600 text-xs uppercase tracking-widest mb-2">
+          <label className="block text-white text-sm uppercase tracking-widest mb-2">
             Phone
           </label>
           <input
@@ -109,7 +109,7 @@ export default function BookingForm({ sessionTypes }: Props) {
           />
         </div>
         <div>
-          <label className="block text-zinc-600 text-xs uppercase tracking-widest mb-2">
+          <label className="block text-white text-sm uppercase tracking-widest mb-2">
             Session Type *
           </label>
           <select
@@ -130,7 +130,7 @@ export default function BookingForm({ sessionTypes }: Props) {
       </div>
 
       <div>
-        <label className="block text-zinc-600 text-xs uppercase tracking-widest mb-2">
+        <label className="block text-white text-sm uppercase tracking-widest mb-2">
           Preferred Date *
         </label>
         <input
@@ -145,7 +145,7 @@ export default function BookingForm({ sessionTypes }: Props) {
       </div>
 
       <div>
-        <label className="block text-zinc-600 text-xs uppercase tracking-widest mb-2">
+        <label className="block text-white text-sm uppercase tracking-widest mb-2">
           Tell Me More
         </label>
         <textarea
@@ -165,12 +165,12 @@ export default function BookingForm({ sessionTypes }: Props) {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="w-full bg-white text-zinc-950 py-4 text-xs uppercase tracking-[0.2em] hover:bg-zinc-100 transition-colors disabled:opacity-50"
+        className="w-full bg-white text-zinc-950 py-4 text-sm uppercase tracking-[0.2em] hover:bg-zinc-100 transition-colors disabled:opacity-50"
       >
         {status === 'loading' ? 'Sending...' : 'Request Booking'}
       </button>
 
-      <p className="text-zinc-700 text-xs text-center">* Required fields</p>
+      <p className="text-zinc-400 text-sm text-center">* Required fields</p>
     </form>
   )
 }

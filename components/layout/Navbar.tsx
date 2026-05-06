@@ -106,7 +106,7 @@ export default function Navbar() {
           <span className={`block text-xs uppercase tracking-widest mb-0.5 transition-colors ${pathname.startsWith(href) ? 'text-white' : 'text-zinc-400 group-hover:text-white'}`}>
             {label}
           </span>
-          <span className="block text-[10px] text-zinc-600 group-hover:text-zinc-500 transition-colors">{desc}</span>
+          <span className="block text-[10px] text-zinc-500 group-hover:text-zinc-400 transition-colors">{desc}</span>
         </Link>
       ))}
     </div>
@@ -202,7 +202,7 @@ export default function Navbar() {
             {mobileExploreOpen && (
               <div className="pl-4 border-l border-zinc-800 space-y-0.5 mb-2">
                 {exploreMenuItems.map(({ href, label }) => (
-                  <Link key={href} href={href} className="block py-2.5 text-sm uppercase tracking-widest text-zinc-500 hover:text-white transition-colors">{label}</Link>
+                  <Link key={href} href={href} className="block py-2.5 text-sm uppercase tracking-widest text-zinc-400 hover:text-white transition-colors">{label}</Link>
                 ))}
               </div>
             )}
@@ -224,7 +224,7 @@ export default function Navbar() {
               {mobileSessionsOpen && (
                 <div className="pl-4 border-l border-zinc-800 space-y-0.5 mb-2">
                   {sessionsMenuItems.map(({ href, label }) => (
-                    <Link key={href} href={href} className="block py-2.5 text-sm uppercase tracking-widest text-zinc-500 hover:text-white transition-colors">{label}</Link>
+                    <Link key={href} href={href} className="block py-2.5 text-sm uppercase tracking-widest text-zinc-400 hover:text-white transition-colors">{label}</Link>
                   ))}
                 </div>
               )}
@@ -243,7 +243,7 @@ export default function Navbar() {
               {mobileClientOpen && (
                 <div className="pl-4 border-l border-zinc-800 space-y-0.5 mb-2">
                   {clientMenuItems.map(({ href, label }) => (
-                    <Link key={href} href={href} className="block py-2.5 text-sm uppercase tracking-widest text-zinc-500 hover:text-white transition-colors">{label}</Link>
+                    <Link key={href} href={href} className="block py-2.5 text-sm uppercase tracking-widest text-zinc-400 hover:text-white transition-colors">{label}</Link>
                   ))}
                 </div>
               )}

@@ -303,15 +303,15 @@ const FAQ_DATA: FAQCategory[] = [
 
 function AccordionItem({ item, isOpen, onToggle }: { item: FAQItem; isOpen: boolean; onToggle: () => void }) {
   return (
-    <div className={`border-b border-zinc-800/60 transition-colors ${isOpen ? 'border-zinc-700' : ''}`}>
+    <div className={`border-b border-zinc-200 transition-colors ${isOpen ? 'bg-zinc-50' : ''}`}>
       <button
         onClick={onToggle}
         className="w-full flex items-start justify-between gap-4 py-5 px-6 text-left group"
       >
-        <span className={`text-sm font-light leading-relaxed transition-colors ${isOpen ? 'text-white' : 'text-zinc-300 group-hover:text-white'}`}>
+        <span className={`text-sm font-light leading-relaxed transition-colors ${isOpen ? 'text-zinc-950' : 'text-zinc-700 group-hover:text-zinc-950'}`}>
           {item.q}
         </span>
-        <span className={`flex-shrink-0 w-5 h-5 mt-0.5 flex items-center justify-center transition-transform duration-300 ${isOpen ? 'rotate-45 text-white' : 'text-zinc-500 group-hover:text-zinc-300'}`}>
+        <span className={`flex-shrink-0 w-5 h-5 mt-0.5 flex items-center justify-center transition-transform duration-300 ${isOpen ? 'rotate-45 text-zinc-950' : 'text-zinc-400 group-hover:text-zinc-700'}`}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
           </svg>
@@ -331,10 +331,10 @@ function AccordionItem({ item, isOpen, onToggle }: { item: FAQItem; isOpen: bool
               {Array.isArray(item.a) ? (
                 <ul className="space-y-2">
                   {item.a.map((line, i) => (
-                    <li key={i} className={`text-sm leading-relaxed flex gap-2 ${i === 0 && item.a[0]?.endsWith(':') ? 'text-zinc-300 font-light list-none' : 'text-zinc-400'}`}>
+                    <li key={i} className={`text-sm leading-relaxed flex gap-2 ${i === 0 && item.a[0]?.endsWith(':') ? 'text-zinc-700 font-light list-none' : 'text-zinc-600'}`}>
                       {i > 0 || !String(item.a[0]).endsWith(':') ? (
                         <>
-                          <span className="text-zinc-600 mt-1.5 flex-shrink-0">—</span>
+                          <span className="text-zinc-400 mt-1.5 flex-shrink-0">—</span>
                           <span>{line}</span>
                         </>
                       ) : (
@@ -344,7 +344,7 @@ function AccordionItem({ item, isOpen, onToggle }: { item: FAQItem; isOpen: bool
                   ))}
                 </ul>
               ) : (
-                <p className="text-zinc-400 text-sm leading-relaxed">{item.a}</p>
+                <p className="text-zinc-600 text-sm leading-relaxed">{item.a}</p>
               )}
             </div>
           </motion.div>
@@ -394,7 +394,7 @@ export default function FAQAccordion() {
           value={search}
           onChange={(e) => { setSearch(e.target.value); setOpenIndex(null) }}
           placeholder="Search questions..."
-          className="w-full bg-zinc-900 border border-zinc-800 text-white pl-11 pr-4 py-3.5 text-sm focus:outline-none focus:border-zinc-600 transition-colors placeholder:text-zinc-700"
+          className="w-full bg-white border border-zinc-300 text-zinc-950 pl-11 pr-4 py-3.5 text-sm focus:outline-none focus:border-zinc-500 transition-colors placeholder:text-zinc-400"
         />
         {search && (
           <button onClick={() => setSearch('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-zinc-400 transition-colors">
@@ -413,14 +413,15 @@ export default function FAQAccordion() {
             onClick={() => handleCategoryChange(cat.id)}
             className={`flex items-center gap-2 px-5 py-2.5 text-xs uppercase tracking-widest transition-all duration-200 ${
               activeCategory === cat.id
-                ? 'bg-white text-zinc-950'
-                : 'border border-zinc-800 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300'
+                ? 'bg-zinc-950 text-white'
+                : 'border border-zinc-300 text-zinc-500 hover:border-zinc-500 hover:text-zinc-950'
             }`}
           >
             <span>{cat.icon}</span>
             {cat.label}
-            <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${activeCategory === cat.id ? 'bg-zinc-200 text-zinc-800' : 'bg-zinc-800 text-zinc-500'}`}>
+            <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${activeCategory === cat.id ? 'bg-white/20 text-white' : 'bg-zinc-100 text-zinc-500'}`}>
               {cat.items.length}
+
             </span>
           </button>
         ))}
@@ -432,10 +433,10 @@ export default function FAQAccordion() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="max-w-3xl mx-auto bg-zinc-900/50 border border-zinc-800/60"
+        className="max-w-3xl mx-auto bg-white border border-zinc-200"
       >
         {filtered.length === 0 ? (
-          <p className="text-center text-zinc-600 text-sm py-16">No results found for "{search}"</p>
+          <p className="text-center text-zinc-400 text-base py-16">No results found for "{search}"</p>
         ) : (
           filtered.map((item, i) => (
             <AccordionItem
@@ -448,29 +449,14 @@ export default function FAQAccordion() {
         )}
       </motion.div>
 
-      <p className="text-center text-zinc-700 text-xs mt-8 tracking-widest uppercase">
+      <p className="text-center text-zinc-400 text-sm mt-8 tracking-widest uppercase">
         {totalCount} questions answered across {FAQ_DATA.length} categories
       </p>
 
       {/* Bottom CTA */}
       <section className="relative mt-28 overflow-hidden">
-        {/* Bokeh background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950" />
-        <div className="absolute inset-0 opacity-30">
-          {[
-            { w: 300, h: 300, top: '10%', left: '5%', delay: '0s' },
-            { w: 200, h: 200, top: '50%', left: '20%', delay: '1s' },
-            { w: 400, h: 400, top: '20%', left: '60%', delay: '0.5s' },
-            { w: 150, h: 150, top: '70%', left: '80%', delay: '1.5s' },
-            { w: 250, h: 250, top: '60%', left: '45%', delay: '2s' },
-          ].map((b, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full bg-white/5 blur-3xl animate-pulse"
-              style={{ width: b.w, height: b.h, top: b.top, left: b.left, animationDelay: b.delay, animationDuration: '4s' }}
-            />
-          ))}
-        </div>
+        {/* Light background */}
+        <div className="absolute inset-0 bg-zinc-50" />
         <div className="relative z-10 py-28 px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -478,23 +464,23 @@ export default function FAQAccordion() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-zinc-500 uppercase tracking-[0.5em] text-xs mb-6">Get Started</p>
-            <h2 className="text-4xl md:text-5xl font-thin text-white mb-6 leading-tight">
+            <p className="text-zinc-500 uppercase tracking-[0.5em] text-sm mb-6">Get Started</p>
+            <h2 className="text-4xl md:text-5xl font-thin text-zinc-950 mb-6 leading-tight">
               Ready to Create Something Beautiful?
             </h2>
-            <p className="text-zinc-400 text-sm md:text-base max-w-lg mx-auto mb-12 leading-relaxed">
+            <p className="text-zinc-600 text-base md:text-lg max-w-lg mx-auto mb-12 leading-relaxed">
               Book your session today and let us capture the moments that matter most.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => setBookingOpen(true)}
-                className="bg-white text-zinc-950 px-10 py-4 text-xs uppercase tracking-[0.3em] hover:bg-zinc-100 transition-colors"
+                className="bg-zinc-950 text-white px-10 py-4 text-xs uppercase tracking-[0.3em] hover:bg-zinc-800 transition-colors"
               >
                 Book a Session
               </button>
               <Link
                 href="/contact"
-                className="border border-zinc-600 text-zinc-300 px-10 py-4 text-xs uppercase tracking-[0.3em] hover:border-white hover:text-white transition-colors"
+                className="border border-zinc-400 text-zinc-600 px-10 py-4 text-xs uppercase tracking-[0.3em] hover:border-zinc-950 hover:text-zinc-950 transition-colors"
               >
                 Contact Us
               </Link>

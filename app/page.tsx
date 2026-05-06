@@ -131,7 +131,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
-            className="text-zinc-400 uppercase tracking-[0.5em] text-xs mb-6"
+            className="text-zinc-300 uppercase tracking-[0.5em] text-sm mb-6"
           >
             Photography & Cinematography
           </motion.p>
@@ -147,7 +147,7 @@ export default function HomePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.8 }}
-            className="text-zinc-300 font-light text-sm md:text-base max-w-md mb-12 leading-relaxed"
+            className="text-zinc-200 font-light text-base md:text-lg max-w-md mb-12 leading-relaxed"
           >
             Capturing moments that tell your story
           </motion.p>
@@ -187,7 +187,7 @@ export default function HomePage() {
       </section>
 
       {/* Real work preview */}
-      <section className="py-28 bg-zinc-950">
+      <section className="py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -195,7 +195,7 @@ export default function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-center text-zinc-600 uppercase tracking-[0.4em] text-xs mb-20">
+            <p className="text-center text-zinc-400 uppercase tracking-[0.4em] text-sm mb-20">
               Recent Work
             </p>
           </motion.div>
@@ -219,7 +219,7 @@ export default function HomePage() {
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-end p-4">
                   <div className="translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                    <p className="text-zinc-400 text-xs uppercase tracking-widest">
+                    <p className="text-zinc-300 text-sm uppercase tracking-widest">
                       {img.category}
                     </p>
                     <p className="text-white text-sm font-light mt-1">{img.alt}</p>
@@ -238,7 +238,7 @@ export default function HomePage() {
           >
             <Link
               href="/portfolio"
-              className="text-zinc-500 text-xs uppercase tracking-[0.3em] border-b border-zinc-800 pb-1 hover:text-white hover:border-white transition-colors"
+              className="text-zinc-950 text-sm uppercase tracking-[0.3em] border-b border-zinc-300 pb-1 hover:text-zinc-600 hover:border-zinc-600 transition-colors"
             >
               Full Portfolio
             </Link>
@@ -247,13 +247,13 @@ export default function HomePage() {
       </section>
 
       {/* Services */}
-      <section className="py-28 px-4 bg-zinc-900/40">
+      <section className="py-28 px-4 bg-white">
         <div className="max-w-5xl mx-auto">
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center text-zinc-600 uppercase tracking-[0.4em] text-xs mb-20"
+            className="text-center text-zinc-500 uppercase tracking-[0.4em] text-sm mb-20"
           >
             Services
           </motion.p>
@@ -267,9 +267,9 @@ export default function HomePage() {
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 className="text-center"
               >
-                <div className="text-zinc-600 text-2xl mb-5">{s.icon}</div>
-                <h3 className="text-white font-light text-base mb-2">{s.title}</h3>
-                <p className="text-zinc-600 text-xs leading-relaxed">{s.desc}</p>
+                <div className="text-zinc-400 text-2xl mb-5">{s.icon}</div>
+                <h3 className="text-zinc-950 font-light text-lg mb-2">{s.title}</h3>
+                <p className="text-zinc-700 text-base leading-relaxed">{s.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -277,7 +277,7 @@ export default function HomePage() {
       </section>
 
       {/* Client Gallery CTA */}
-      <section className="py-28 px-4 bg-zinc-950">
+      <section className="py-28 px-4 bg-white">
         <div className="max-w-xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -285,18 +285,18 @@ export default function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <p className="text-zinc-600 uppercase tracking-[0.4em] text-xs mb-6">
+            <p className="text-zinc-500 uppercase tracking-[0.4em] text-sm mb-6">
               For Clients
             </p>
-            <h2 className="text-3xl font-thin text-white mb-5">
+            <h2 className="text-3xl font-thin text-zinc-950 mb-5">
               Your Photos Are Ready
             </h2>
-            <p className="text-zinc-500 text-sm mb-10 leading-relaxed">
+            <p className="text-zinc-700 text-base mb-10 leading-relaxed">
               Access your private gallery to view and download your full-resolution photos.
             </p>
             <Link
               href="/gallery"
-              className="border border-zinc-700 text-zinc-400 px-10 py-3.5 text-xs uppercase tracking-[0.2em] hover:border-white hover:text-white transition-colors"
+              className="border border-zinc-400 text-zinc-700 px-10 py-3.5 text-sm uppercase tracking-[0.2em] hover:border-zinc-950 hover:text-zinc-950 transition-colors"
             >
               Access My Gallery
             </Link>
@@ -332,16 +332,16 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center"
           >
-            <p className="text-zinc-600 uppercase tracking-[0.4em] text-xs mb-6">
+            <p className="text-white uppercase tracking-[0.4em] text-sm mb-6">
               Print Shop
             </p>
             <h2 className="text-3xl font-thin text-white mb-5">Fine Art Prints</h2>
-            <p className="text-zinc-500 text-sm mb-10 leading-relaxed">
+            <p className="text-white text-base mb-10 leading-relaxed">
               Museum-quality prints on archival paper, professionally produced and ready to hang.
             </p>
             <Link
               href="/shop"
-              className="bg-white text-zinc-950 px-10 py-3.5 text-xs uppercase tracking-[0.2em] hover:bg-zinc-100 transition-colors"
+              className="bg-white text-zinc-950 px-10 py-3.5 text-sm uppercase tracking-[0.2em] hover:bg-zinc-100 transition-colors"
             >
               Shop Prints
             </Link>

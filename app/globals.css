@@ -54,8 +54,8 @@
 /* Blog content */
 .blog-content h2 { font-size: 1.5rem; font-weight: 300; margin: 2rem 0 1rem; color: white; }
 .blog-content h3 { font-size: 1.25rem; font-weight: 300; margin: 1.5rem 0 0.75rem; color: #e4e4e7; }
-.blog-content p { margin-bottom: 1.25rem; line-height: 1.8; color: #a1a1aa; }
-.blog-content ul, .blog-content ol { margin: 1rem 0 1.25rem 1.5rem; color: #a1a1aa; }
+.blog-content p { margin-bottom: 1.25rem; line-height: 1.8; color: #ffffff; }
+.blog-content ul, .blog-content ol { margin: 1rem 0 1.25rem 1.5rem; color: #ffffff; }
 .blog-content li { margin-bottom: 0.5rem; line-height: 1.7; }
 .blog-content img { width: 100%; height: auto; margin: 2rem 0; }
-.blog-content blockquote { border-left: 2px solid #3f3f46; padding-left: 1.5rem; margin: 1.5rem 0; color: #71717a; font-style: italic; }
+.blog-content blockquote { border-left: 2px solid #3f3f46; padding-left: 1.5rem; margin: 1.5rem 0; color: #d4d4d8; font-style: italic; }

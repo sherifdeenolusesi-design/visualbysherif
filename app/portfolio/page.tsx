@@ -102,7 +102,7 @@ export default function PortfolioPage({
     <div className="min-h-screen pt-16">
       <div className="max-w-7xl mx-auto px-4 py-16">
         <h1 className="text-4xl font-thin text-center text-white mb-3">Portfolio</h1>
-        <p className="text-zinc-500 text-center text-sm mb-14">
+        <p className="text-white text-center text-base mb-14">
           Capturing life's authentic moments
         </p>
 
@@ -156,7 +156,7 @@ export default function PortfolioPage({
         {category === 'All' && <div className="mb-8" />}
 
         {photos.length === 0 ? (
-          <p className="text-center text-zinc-600 text-sm py-24">
+          <p className="text-center text-zinc-400 text-base py-24">
             No images yet. Add a subfolder to{' '}
             <code className="text-zinc-400">public/portfolio/portraits/</code> or{' '}
             <code className="text-zinc-400">public/portfolio/events/</code>

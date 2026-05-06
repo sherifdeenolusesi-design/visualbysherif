@@ -45,11 +45,11 @@ export default function AboutPage() {
           </div>
 
           <div className="flex flex-col justify-center">
-            <p className="text-zinc-600 uppercase tracking-[0.4em] text-xs mb-6">
+            <p className="text-zinc-400 uppercase tracking-[0.4em] text-sm mb-6">
               Behind the Lens
             </p>
             <h1 className="text-4xl font-thin text-white mb-8">Hi, I'm Sherif</h1>
-            <div className="space-y-5 text-zinc-500 text-sm leading-relaxed">
+            <div className="space-y-5 text-white text-base leading-relaxed">
               <p>
                 For over a decade, I have been telling love stories, capturing milestone
                 moments, and freezing time for families, couples and brands across Birmingham
@@ -98,18 +98,18 @@ export default function AboutPage() {
 
         {/* Gear */}
         <div>
-          <p className="text-zinc-600 uppercase tracking-[0.4em] text-xs text-center mb-14">
+          <p className="text-zinc-400 uppercase tracking-[0.4em] text-sm text-center mb-14">
             The Gear
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {gear.map((section) => (
               <div key={section.category} className="border border-zinc-900 p-8">
-                <h3 className="text-zinc-500 text-xs uppercase tracking-widest mb-5">
+                <h3 className="text-zinc-300 text-sm uppercase tracking-widest mb-5">
                   {section.category}
                 </h3>
                 <ul className="space-y-2.5">
                   {section.items.map((item) => (
-                    <li key={item} className="text-white font-light text-sm">
+                    <li key={item} className="text-white font-light text-base">
                       {item}
                     </li>
                   ))}
