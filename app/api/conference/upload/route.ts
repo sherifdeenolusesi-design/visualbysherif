@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   const supabase = adminClient()
 
   // Ensure bucket exists
-  await supabase.storage.createBucket('conference-photos', { public: true }).catch(() => {})
+  await supabase.storage.createBucket('conference-session', { public: true }).catch(() => {})
 
   const { count } = await supabase
     .from('session_photos')
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
       const buffer = Buffer.from(await file.arrayBuffer())
 
       const { error: uploadError } = await supabase.storage
-        .from('conference-photos')
+        .from('conference-session')
         .upload(storagePath, buffer, {
           contentType: file.type || 'image/jpeg',
           upsert: false,
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       }
 
       const { data: { publicUrl } } = supabase.storage
-        .from('conference-photos')
+        .from('conference-session')
         .getPublicUrl(storagePath)
 
       const { data, error } = await supabase
