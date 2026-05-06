@@ -60,7 +60,7 @@ export default async function BlogPostPage({ params }: Props) {
       <div className="max-w-2xl mx-auto px-4 py-16">
         <Link
           href="/blog"
-          className="text-zinc-600 text-xs uppercase tracking-widest hover:text-white transition-colors mb-10 inline-block"
+          className="text-white text-sm uppercase tracking-widest hover:text-zinc-300 transition-colors mb-10 inline-block"
         >
           ← Back to Blog
         </Link>
@@ -68,7 +68,7 @@ export default async function BlogPostPage({ params }: Props) {
         {post.tags && post.tags.length > 0 && (
           <div className="flex gap-3 mb-5">
             {post.tags.map((tag: string) => (
-              <span key={tag} className="text-xs text-zinc-600 uppercase tracking-widest">
+              <span key={tag} className="text-sm text-white uppercase tracking-widest">
                 {tag}
               </span>
             ))}
@@ -78,7 +78,7 @@ export default async function BlogPostPage({ params }: Props) {
         <h1 className="text-4xl md:text-5xl font-thin text-white mb-4 leading-tight">
           {post.title}
         </h1>
-        <p className="text-zinc-600 text-xs mb-14 uppercase tracking-widest">{date}</p>
+        <p className="text-white text-sm mb-14 uppercase tracking-widest">{date}</p>
 
         <div
           className="blog-content"

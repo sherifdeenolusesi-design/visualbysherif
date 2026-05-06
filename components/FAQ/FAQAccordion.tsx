@@ -308,7 +308,7 @@ function AccordionItem({ item, isOpen, onToggle }: { item: FAQItem; isOpen: bool
         onClick={onToggle}
         className="w-full flex items-start justify-between gap-4 py-5 px-6 text-left group"
       >
-        <span className={`text-sm font-light leading-relaxed transition-colors ${isOpen ? 'text-zinc-950' : 'text-zinc-700 group-hover:text-zinc-950'}`}>
+        <span className={`text-base font-light leading-relaxed transition-colors ${isOpen ? 'text-white' : 'text-white group-hover:text-zinc-200'}`}>
           {item.q}
         </span>
         <span className={`flex-shrink-0 w-5 h-5 mt-0.5 flex items-center justify-center transition-transform duration-300 ${isOpen ? 'rotate-45 text-zinc-950' : 'text-zinc-400 group-hover:text-zinc-700'}`}>
@@ -331,7 +331,7 @@ function AccordionItem({ item, isOpen, onToggle }: { item: FAQItem; isOpen: bool
               {Array.isArray(item.a) ? (
                 <ul className="space-y-2">
                   {item.a.map((line, i) => (
-                    <li key={i} className={`text-sm leading-relaxed flex gap-2 ${i === 0 && item.a[0]?.endsWith(':') ? 'text-zinc-700 font-light list-none' : 'text-zinc-600'}`}>
+                    <li key={i} className={`text-sm leading-relaxed flex gap-2 ${i === 0 && item.a[0]?.endsWith(':') ? 'text-white font-light list-none' : 'text-white'}`}>
                       {i > 0 || !String(item.a[0]).endsWith(':') ? (
                         <>
                           <span className="text-zinc-400 mt-1.5 flex-shrink-0">—</span>
@@ -344,7 +344,7 @@ function AccordionItem({ item, isOpen, onToggle }: { item: FAQItem; isOpen: bool
                   ))}
                 </ul>
               ) : (
-                <p className="text-zinc-600 text-sm leading-relaxed">{item.a}</p>
+                <p className="text-white text-base leading-relaxed">{item.a}</p>
               )}
             </div>
           </motion.div>

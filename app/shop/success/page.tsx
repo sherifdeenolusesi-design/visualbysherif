@@ -52,7 +52,7 @@ export default async function SuccessPage({
         </div>
 
         <h1 className="text-3xl font-thin text-white text-center mb-3">Order Confirmed</h1>
-        <p className="text-zinc-500 text-sm text-center mb-12">
+        <p className="text-white text-base text-center mb-12">
           Thank you{cust?.name ? `, ${cust.name.split(' ')[0]}` : ''}. Your print is on its way to production.
         </p>
 
@@ -60,7 +60,7 @@ export default async function SuccessPage({
         <div className="border border-zinc-800 divide-y divide-zinc-800">
 
           <div className="px-6 py-4 flex justify-between items-center">
-            <span className="text-zinc-500 text-xs uppercase tracking-widest">Reference</span>
+            <span className="text-white text-sm uppercase tracking-widest">Reference</span>
             <span className="text-white text-xs font-mono">{sessionId.slice(-12).toUpperCase()}</span>
           </div>
 
@@ -68,7 +68,7 @@ export default async function SuccessPage({
             <div key={item.id} className="px-6 py-4 flex justify-between items-start">
               <div>
                 <p className="text-white text-sm font-light">{item.description}</p>
-                <p className="text-zinc-600 text-xs mt-0.5">Qty: {item.quantity}</p>
+                <p className="text-white text-sm mt-0.5">Qty: {item.quantity}</p>
               </div>
               <p className="text-white text-sm">{fmt(item.amount_total, session!.currency!)}</p>
             </div>
@@ -110,7 +110,7 @@ export default async function SuccessPage({
 
         {/* Fulfilment timeline */}
         <div className="mt-8 border border-zinc-800 p-6">
-          <p className="text-zinc-500 text-xs uppercase tracking-widest mb-4">What Happens Next</p>
+          <p className="text-white text-sm uppercase tracking-widest mb-4">What Happens Next</p>
           <ol className="space-y-4">
             {[
               { label: 'Order received', done: true, note: 'Confirmation sent to ' + (cust?.email ?? 'your email') },
@@ -128,7 +128,7 @@ export default async function SuccessPage({
                 </div>
                 <div>
                   <p className={`text-sm ${step.done ? 'text-white' : 'text-zinc-500'}`}>{step.label}</p>
-                  <p className="text-zinc-600 text-xs mt-0.5">{step.note}</p>
+                  <p className="text-white text-sm mt-0.5">{step.note}</p>
                 </div>
               </li>
             ))}

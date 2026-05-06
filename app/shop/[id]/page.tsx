@@ -40,7 +40,7 @@ export default async function ProductPage({ params }: Props) {
       <div className="max-w-6xl mx-auto px-4 py-20">
         <Link
           href="/shop"
-          className="text-zinc-600 text-xs uppercase tracking-widest hover:text-white transition-colors mb-14 inline-block"
+          className="text-white text-sm uppercase tracking-widest hover:text-zinc-300 transition-colors mb-14 inline-block"
         >
           ← Back to Shop
         </Link>
@@ -58,16 +58,16 @@ export default async function ProductPage({ params }: Props) {
           </div>
 
           <div className="flex flex-col justify-center">
-            <p className="text-zinc-600 text-xs uppercase tracking-widest mb-4">
+            <p className="text-white text-sm uppercase tracking-widest mb-4">
               {product.category}
             </p>
             <h1 className="text-3xl font-thin text-white mb-4">{product.title}</h1>
             <p className="text-2xl text-white font-light mb-6">{formatPrice(product.price)}</p>
-            <p className="text-zinc-500 text-sm leading-relaxed mb-10">{product.description}</p>
+            <p className="text-white text-base leading-relaxed mb-10">{product.description}</p>
 
             <ProductBuySection product={product} />
 
-            <ul className="mt-10 pt-10 border-t border-zinc-900 space-y-2.5 text-xs text-zinc-600">
+            <ul className="mt-10 pt-10 border-t border-zinc-900 space-y-2.5 text-sm text-white">
               <li>✓ Museum-quality archival paper</li>
               <li>✓ Professionally produced &amp; quality checked</li>
               <li>✓ Ships within 5–7 business days</li>

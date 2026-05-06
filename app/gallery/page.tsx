@@ -17,9 +17,9 @@ export default function GalleryIndexPage() {
   return (
     <div className="min-h-screen pt-16 flex items-center justify-center px-4">
       <div className="w-full max-w-sm text-center">
-        <p className="text-zinc-600 uppercase tracking-[0.4em] text-xs mb-6">Client Access</p>
+        <p className="text-white uppercase tracking-[0.4em] text-sm mb-6">Client Access</p>
         <h1 className="text-3xl font-thin text-white mb-3">Your Gallery</h1>
-        <p className="text-zinc-500 text-sm mb-10 leading-relaxed">
+        <p className="text-white text-base mb-10 leading-relaxed">
           Enter the gallery name provided by your photographer.
         </p>
 
@@ -40,7 +40,7 @@ export default function GalleryIndexPage() {
           </button>
         </form>
 
-        <p className="text-zinc-700 text-xs mt-8">
+        <p className="text-white text-sm mt-8">
           Don't have a gallery name?{' '}
           <a href="/contact" className="text-zinc-500 hover:text-white transition-colors">
             Contact the photographer
