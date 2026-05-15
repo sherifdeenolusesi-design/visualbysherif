@@ -2,6 +2,12 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 
+interface SavedContract {
+  id: string; ref: string; client_name: string; client_email: string
+  project_type: string; event_date: string; total_amount: number
+  deposit_amount: number; status: string; created_at: string
+}
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 type ProjectType = 'Wedding' | 'Event' | 'Portrait' | 'Commercial' | 'Newborn' | 'Other'
 
@@ -627,6 +633,11 @@ export default function ContractPage() {
   const [preview, setPreview] = useState(false)
   const [clientSig, setClientSig] = useState('')
   const [photographerSig, setPhotographerSig] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [savedMsg, setSavedMsg] = useState('')
+  const [history, setHistory] = useState<SavedContract[]>([])
+  const [historyOpen, setHistoryOpen] = useState(false)
+  const [historyLoading, setHistoryLoading] = useState(false)
 
   const [form, setForm] = useState<FormData>({
     clientName: '', clientEmail: '', clientPhone: '', clientAddress: '',
@@ -684,26 +695,136 @@ export default function ContractPage() {
   const balance = totalAmt - depositAmt
   const clauses = buildClauses(form)
 
+  const fetchHistory = async () => {
+    setHistoryLoading(true)
+    const res = await fetch('/api/contracts')
+    const data = await res.json()
+    setHistory(data.contracts ?? [])
+    setHistoryLoading(false)
+  }
+
+  const saveContract = async () => {
+    setSaving(true); setSavedMsg('')
+    try {
+      const res = await fetch('/api/contracts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ref: ref_, form_data: form, client_sig: clientSig, photographer_sig: photographerSig }),
+      })
+      if (res.ok) {
+        setSavedMsg('✓ Contract saved')
+        fetchHistory()
+      } else {
+        setSavedMsg('Save failed — try again')
+      }
+    } catch { setSavedMsg('Save failed — try again') }
+    finally { setSaving(false); setTimeout(() => setSavedMsg(''), 3000) }
+  }
+
+  const loadContract = async (c: SavedContract) => {
+    const res = await fetch(`/api/contracts?id=${c.id}`)
+    const full = await res.json()
+    const saved = full.contracts?.find((x: any) => x.id === c.id) || c
+    if (saved.form_data) {
+      setForm(saved.form_data)
+      setHistoryOpen(false)
+    }
+  }
+
+  const deleteContract = async (id: string) => {
+    if (!confirm('Delete this contract? This cannot be undone.')) return
+    await fetch('/api/contracts', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) })
+    fetchHistory()
+  }
+
+  const fmt = (d: string) => d ? new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'
+
   const inputCls = 'w-full bg-zinc-900 border border-zinc-800 text-white px-3 py-2.5 text-sm focus:outline-none focus:border-zinc-600 transition-colors placeholder:text-zinc-700'
   const TYPES: ProjectType[] = ['Wedding', 'Event', 'Portrait', 'Commercial', 'Newborn', 'Other']
 
   return (
     <div className="min-h-screen pt-16 bg-zinc-950">
       <div className="max-w-6xl mx-auto px-4 py-12">
-        <div className="flex items-center justify-between mb-10">
+        <div className="flex items-center justify-between mb-6">
           <div>
             <p className="text-zinc-600 uppercase tracking-[0.4em] text-xs mb-2">Sessions</p>
             <h1 className="text-3xl font-thin text-white">Contract Generator</h1>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 flex-wrap justify-end">
+            <button
+              onClick={() => { setHistoryOpen(o => !o); if (!historyOpen) fetchHistory() }}
+              className="border border-zinc-700 text-zinc-400 hover:text-white px-5 py-2.5 text-xs uppercase tracking-widest transition-colors"
+            >
+              📋 History {history.length > 0 && `(${history.length})`}
+            </button>
+            <button
+              onClick={saveContract} disabled={saving}
+              className="border border-amber-500/50 text-amber-400 hover:border-amber-400 px-5 py-2.5 text-xs uppercase tracking-widest transition-colors disabled:opacity-50"
+            >
+              {saving ? 'Saving…' : '✦ Save Contract'}
+            </button>
             <button onClick={() => setPreview(p => !p)} className="border border-zinc-700 text-zinc-400 hover:text-white px-5 py-2.5 text-xs uppercase tracking-widest transition-colors">
-              {preview ? 'Edit' : 'Preview Contract'}
+              {preview ? 'Edit' : 'Preview'}
             </button>
             <button onClick={() => window.print()} className="bg-white text-zinc-950 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-zinc-100 transition-colors">
-              Print / Download
+              Print / PDF
             </button>
           </div>
         </div>
+
+        {savedMsg && (
+          <div className="mb-4 px-4 py-2 border border-green-800 bg-green-950/30 text-green-400 text-xs uppercase tracking-widest">
+            {savedMsg}
+          </div>
+        )}
+
+        {/* ── Contract History Panel ── */}
+        {historyOpen && (
+          <div className="mb-8 border border-zinc-800 bg-zinc-900/50">
+            <div className="flex items-center justify-between px-5 py-3 border-b border-zinc-800">
+              <p className="text-white text-sm uppercase tracking-widest">Saved Contracts</p>
+              <button onClick={() => setHistoryOpen(false)} className="text-zinc-600 hover:text-white text-xs">✕ Close</button>
+            </div>
+            {historyLoading ? (
+              <p className="text-zinc-500 text-sm p-6 text-center">Loading…</p>
+            ) : history.length === 0 ? (
+              <p className="text-zinc-600 text-sm p-6 text-center">No saved contracts yet. Fill the form and click Save Contract.</p>
+            ) : (
+              <div className="divide-y divide-zinc-800">
+                {history.map(c => (
+                  <div key={c.id} className="flex items-center gap-4 px-5 py-4 hover:bg-zinc-900/50 transition-colors">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-1">
+                        <span className="text-white text-sm font-light truncate">{c.client_name || 'Unnamed Client'}</span>
+                        <span className={`text-[10px] px-2 py-0.5 border ${c.status === 'signed' ? 'border-green-800 text-green-400' : 'border-zinc-700 text-zinc-500'}`}>
+                          {c.status}
+                        </span>
+                        <span className="text-zinc-500 text-[10px]">{c.project_type}</span>
+                      </div>
+                      <div className="flex items-center gap-3 text-zinc-600 text-xs">
+                        <span className="font-mono">{c.ref}</span>
+                        <span>·</span>
+                        <span>{c.event_date ? fmt(c.event_date) : 'No date'}</span>
+                        <span>·</span>
+                        <span>£{Number(c.total_amount).toFixed(2)}</span>
+                        <span>·</span>
+                        <span>Saved {fmt(c.created_at)}</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 flex-shrink-0">
+                      <button onClick={() => loadContract(c)} className="text-[10px] uppercase tracking-widest border border-zinc-700 text-zinc-400 px-3 py-1.5 hover:border-white hover:text-white transition-colors">
+                        Load
+                      </button>
+                      <button onClick={() => deleteContract(c.id)} className="text-[10px] uppercase tracking-widest border border-red-900 text-red-700 px-3 py-1.5 hover:border-red-500 hover:text-red-400 transition-colors">
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {!preview ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
