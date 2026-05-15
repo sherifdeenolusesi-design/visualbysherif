@@ -34,8 +34,8 @@ export async function POST(request: Request) {
       weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
     })
     await resend.emails.send({
-      from: 'Booking Notifications <bookings@visualsbysherif.com>',
-      to: 'sherifdeenolusesi@gmail.com',
+      from: 'Booking Notifications <onboarding@resend.dev>',
+      to: 'visualbysherif@gmail.com',
       subject: `New Booking Request — ${session_type} — ${name}`,
       html: `
         <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#111">
